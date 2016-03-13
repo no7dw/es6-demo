@@ -10,9 +10,9 @@ var laterError = function(){
         console.log(a.b.c);//simulate an error :TypeError: Cannot read property 'c' of undefined
         resolve('a');
       }catch(e) {
-        console.log('reject');
         reject(e)
       }
+
     }, 100);
   });
 };
@@ -23,7 +23,12 @@ async function main() {
   }
   catch (e) {
     console.log('##########get a error in main end');
+    throw new Error(e);//throw twice in order to simulate inheritance
   }
 };
 
-main();
+
+main()
+  .catch((e) => {
+  console.log('##########get a error in outside end');
+});
