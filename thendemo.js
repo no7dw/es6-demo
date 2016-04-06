@@ -2,16 +2,40 @@
 /*global console*/
  
 var Thenjs = require('thenjs');
- 
+
+var laterThrow = function (cont) {
+  setTimeout(function () {
+    console.log("Hello World throw error");
+    var a = {};
+    console.log(a.b.c);
+    cont();
+  }, 1000);
+};
+var laterError = function(){
+  return new Promise(function (resolve, reject) {
+    setTimeout(function () {
+      try {
+        var a = {};
+        console.log(a.b.c);//simulate an error :TypeError: Cannot read property 'c' of undefined
+        resolve(a);
+      }catch(e) {
+        console.log('reject');
+        reject(e)//TypeError: Cannot read property 'c' of undefined
+      }
+    }, 100);
+  });
+};
+
 function task(arg, callback) { // 模拟异步任务 
   Thenjs.nextTick(function () {
-    throw new Error('eror async');
     callback(null, arg);
   });
 }
  
 Thenjs(function (cont) {
-  task(10, cont);
+  //task(10, cont);
+  //laterThrow(cont);
+  laterError();
 })
 .then(function (cont, arg) {
   console.log(arg);

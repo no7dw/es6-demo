@@ -1,5 +1,3 @@
-var request = require('request');
-
 function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -32,3 +30,8 @@ async function main() {
 console.log('start');
 
 main()
+  .then((value) => {
+  console.log('##########outside normal end');
+}).catch((err) =>{
+  console.log('##########outside catch end', err);
+})
